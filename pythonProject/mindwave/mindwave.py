@@ -335,7 +335,7 @@ class Headset(object):
             if not headset_id:
                 self.autoconnect()
                 return
-        self.dongle.write(''.join([CONNECT, headset_id.decode('hex')]))
+        self.dongle.write(''.join([CONNECT, 'C9B2']))
 
     def autoconnect(self):
         """Automatically connect device to headset."""
