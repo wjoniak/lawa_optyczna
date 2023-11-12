@@ -1,9 +1,9 @@
 #coding: latin-1
 # Run me with frameworkpython inside a virtual environment.
 
-# This program connect to ThinkGear and receives via TCP/IP all the
-# raw streaming from NeuroSky MindWave Mobile (the black headset)
-# It also plot the signal using matplotlib.
+#This program connect to ThinkGear and receives via TCP/IP all the
+#raw streaming from NeuroSky MindWave Mobile (the black headset)
+#It also plot the signal using matplotlib.
 
 import socket, select
 import json

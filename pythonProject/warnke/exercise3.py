@@ -2,17 +2,34 @@ import random,os
 import numpy as np
 import time,pygame
 
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+import matplotlib.backends.backend_agg as agg
+
+
+import pylab
+
 from pygame.locals import *
 from gauge import Gauge
 
 
 
-trend =[]
-reflection =[]
-sound_path ="sounds/select.mp3"
+sound_path = "sounds/select.mp3"
+exercise_window = pygame.display.set_mode((1200, 675))
+pygame.display.set_caption("ćwiczenie")
+
+
 game = 1 # 1-trening słuchowo-wzrokowy, 2 - tylko słuch, 3 - tylko wzrok
 
-exercise_window = pygame.display.set_mode((1200, 675))
+pygame.init()
+pygame.mixer.init(channels=2)
+image_path = 'images/splash_screen.png'
+screen = pygame.image.load(image_path)
+screen = pygame.transform.scale(screen,(1200,675))
+exercise_window.blit(screen, (0,0))
+pygame.display.update()
 
 def  DisplayInfo(path):
     answer = -1
@@ -21,7 +38,6 @@ def  DisplayInfo(path):
             break
         answer =-1
         image_path = 'info/exercise1/'+'exercise1.00' + str(i + 1) + '.jpeg'
-        print(image_path)
         screen = pygame.image.load(image_path)
         screen = pygame.transform.scale(screen,(1200,675))
         exercise_window.blit(screen, (0,0))
@@ -30,9 +46,10 @@ def  DisplayInfo(path):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    break
                 if event.type == pygame.JOYBUTTONDOWN:
                     answer = event.button
+
 
 
     pygame.mixer.Sound("sounds/start-beeps.mp3").play()
@@ -64,9 +81,12 @@ def sound(channel,path=sound_path):
 
     sound.play()
     return channel
-def exercise():
-    pygame.init()
-    pygame.mixer.init(channels=2)
+def exercise(game = 1 ):
+    trend = []
+    reflection = []
+
+
+
 
     pygame.joystick.init()
     joystick_count = pygame.joystick.get_count()
@@ -111,16 +131,19 @@ def exercise():
         lamp2_L = pygame.image.load('images/bulb2.png')
         lamp1_R = pygame.image.load('images/bulb1.png')
         lamp2_R = pygame.image.load('images/bulb2.png')
+        pozycja_obrazka1 = (100, 50)
+        pozycja_obrazka2 = (800, 50)
     elif game == 2:
         lamp1_L = pygame.image.load('images/speaker_left.png')
         lamp2_L = pygame.image.load('images/speaker_left.png')
         lamp1_R = pygame.image.load('images/speaker_right.png')
         lamp2_R = pygame.image.load('images/speaker_right.png')
+        pozycja_obrazka1 = (100, 50)
+        pozycja_obrazka2 = (700, 50)
 
     no = pygame.image.load('images/no.png')
     ok = pygame.image.load('images/ok.png')
-    pozycja_obrazka1 = (100, 50)
-    pozycja_obrazka2 = (800, 50)
+
     result_position = (exercise_window.get_width()/2.0 - 100, 100)
 
 
@@ -140,7 +163,8 @@ def exercise():
     pygame.display.update()
     time.sleep(3)
 
-    #time.sleep(5)
+    pygame.mixer.music.load("sounds/classrom-talk.mp3")
+    pygame.mixer.music.play(-1)
 
     #main loop:
 
@@ -192,31 +216,82 @@ def exercise():
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                    pygame.display.quit()
                     exit()
                 if event.type == pygame.JOYBUTTONDOWN:
 
                     elapsed_time = pygame.time.get_ticks() - start_time
-                    reflection.append(elapsed_time)
+                    reflection.append(round(elapsed_time/1000.0 ,2))
                     start_time = elapsed_time
                     answer = event.button - 9
                     if answer == task % 2:
                         exercise_window.blit(ok, result_position)
                         pygame.display.update()
                         counter_y += 1
-                        offset=offset -0.05
+                        offset=offset -0.02
                     else:
                         exercise_window.blit(no, result_position)
                         pygame.display.update()
-                        offset = offset + 0.01
+                        offset = offset + 0.02
                         counter_n += 1
                     break
 
-        trend.append(offset)
+        trend.append(round(offset,2))
         if offset<0.01:
             setpoint +=1
             offset = 0.01
-        if setpoint > 2:
-            exit()
+        if setpoint > 10:
+            break
         time.sleep(3)
-return([reflection,trend,counter_y,counter_n])
+    return([reflection,trend,counter_y,counter_n])
+
+def wynik(wyniki):
+    screen = pygame.image.load('info/exercise1/exercise1.006.jpeg')
+    screen = pygame.transform.scale(screen, (1200, 675))
+    exercise_window.blit(screen, (0, 0))
+
+    # Utworzenie obiektu Surface z tekstem
+    font = pygame.font.Font('fonts/Raleway-Bold.ttf', 36)  # Wybierz czcionkę i rozmiar
+    text = font.render("średni czas reakcji: "+str(round(sum(wyniki[0]) / len(wyniki[0] ),2))+' s', True, (0, 0, 255))
+    text_rect = text.get_rect()
+    text_rect.center = (exercise_window.get_width() // 2, 50)  # Ustaw pozycję napisu
+    exercise_window.blit(text, text_rect)
+    text = font.render("poprawne odpowiedzi: " + str(wyniki[3]), True, (0, 0, 255))
+    text_rect = text.get_rect()
+    text_rect.center = (exercise_window.get_width() // 2, 100)  # Ustaw pozycję napisu
+    exercise_window.blit(text, text_rect)
+    text = font.render("błędy: " + str(wyniki[2]), True, (0, 0, 255))
+    text_rect = text.get_rect()
+    text_rect.center = (exercise_window.get_width() // 2, 150)  # Ustaw pozycję napisu
+    exercise_window.blit(text, text_rect)
+    plt.style.use('ggplot')
+
+    fig = pylab.figure(figsize=[10, 4],  # Inches
+                       dpi=100,  # 100 dots per inch, so the resulting buffer is 400x400 pixels
+                       )
+    fig.figure.set_alpha(0)
+    ax = fig.gca()
+
+
+    ax.plot(wyniki[0],label='czas reakcji')
+    ax.plot(wyniki[1], label='opóźnienie')
+    ax.legend()
+
+
+    canvas = agg.FigureCanvasAgg(fig)
+    canvas.draw()
+    renderer = canvas.get_renderer()
+    raw_data = renderer.tostring_rgb()
+    wykres = pygame.display.get_surface()
+    size = canvas.get_width_height()
+
+    surf = pygame.image.fromstring(raw_data, size, "RGB")
+    wykres.blit(surf, (100, 200))
+
+    pygame.display.flip()
+
+    time.sleep(10)
+    return
+
+
+

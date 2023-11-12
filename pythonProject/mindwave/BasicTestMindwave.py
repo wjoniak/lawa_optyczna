@@ -1,7 +1,7 @@
 import mindwave, time
 from pprint import pprint
 
-headset = mindwave.Headset('/dev/tty.MindWaveMobile-DevA','ef47')
+headset = mindwave.Headset('/dev/cu.usbserial-1230','C9B2')
 time.sleep(2)
 
 # headset.connect()

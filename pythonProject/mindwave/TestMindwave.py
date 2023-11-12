@@ -1,33 +1,34 @@
 import mindwave, time
 from pprint import pprint
 
-headset = mindwave.Headset('/dev/tty.MindWaveMobile-DevA','ef47')
+headset = mindwave.Headset('/dev/tty.MindWaveMobile','C9B2')
 
 time.sleep(2)
 
-# headset.connect()
-# print "Connecting..."
+headset.connect()
+print ("Connecting...")
 #
-# while headset.status != 'connected':
-#     time.sleep(0.5)
-#     if headset.status == 'standby':
-#         headset.connect()
-#         print "Retrying connect..."
-# print "Connected."
+while headset.status != 'connected':
+     time.sleep(0.5)
+     if headset.status == 'standby':
+         headset.connect()
+         print ("Retrying connect...")
+print ("Connected.")
+from NeuroPy import NeuroPy
+from time import sleep
 
-def on_raw( headset, rawvalue):
-    print ("Count %d :Raw value: %s, Attention: %s, Meditation: %s" % (headset.count, headset.raw_value, headset.attention, headset.meditation))
+neuropy = NeuroPy()
 
-headset.raw_value_handlers.append( on_raw )
+def attention_callback(attention_value):
+    """this function will be called everytime NeuroPy has a new value for attention"""
+    print ("Value of attention is: ", attention_value)
+    return None
 
+neuropy.setCallBack("attention", attention_callback)
+neuropy.start()
 
 try:
-    while (headset.poor_signal > 5):
-        print ("Headset signal is too bad %d. Adjust the headset to fit your head." % (headset.poor_signal))
-
-    while (True):
-        time.sleep(.01)
-        #print "Count %d :Raw value: %s, Attention: %s, Meditation: %s" % (headset.count, headset.raw_value, headset.attention, headset.meditation)
-        #pprint(headset.waves)
+    while True:
+        sleep(0.2)
 finally:
-    headset.disconnect()
+    neuropy.stop()
