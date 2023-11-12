@@ -3,7 +3,8 @@ import sys
 import pygame
 from PyQt6.QtWidgets import QApplication, QWidget,QPushButton,QMainWindow,QHBoxLayout,\
     QVBoxLayout,QComboBox,QLabel,QFormLayout,QSpinBox,QLineEdit
-import exercise3
+import exercise3,exercise2
+
 
 app = QApplication(sys.argv)
 class MainWindow(QMainWindow):
@@ -20,24 +21,11 @@ class MainWindow(QMainWindow):
 
 
         self.game_selector = QComboBox()
-        #self.game_selector.addItem("postrzeganie kierunkowe -  wzrok i słuch")
-        #self.game_selector.addItem("postrzeganie kierunkowe - tylko słuch")
-        #self.game_selector.addItem("postrzeganie kierunkowe - tylko wzrok")
-        self.game_selector.addItem("wybierz ćwiczenie...")
-        self.game_selector.addItem("1: Próg kolejności wzrokowej")
-        self.game_selector.addItem("2: Próg kolejności słuchowej")
-        self.game_selector.addItem("3: Słyszenie kierunkowe")
-        self.game_selector.addItem("4: Różnicowane tonów")
-        self.game_selector.addItem("5: Synchroniczne wystukiwanie rytmu")
-        self.game_selector.addItem("6: Czas reakcji z wyborem")
-        self.game_selector.addItem("7: Rozpoznawanie wzorca częstotliwości czasu")
-        self.game_selector.addItem("8: Koordynacja oko-ręka")
-        self.game_selector.addItem("9: Czytanie pseudotekstów")
-        self.game_selector.addItem("10: Zdolność do krótkotrwałego zapamiętywania sylab")
-        self.game_selector.addItem("11: Selektywność percepcji")
-        self.game_selector.addItem("12: Spostrzeganie dynamiczne")
-        self.game_selector.addItem("13: Współpraca obuoczna")
-        self.game_selector.addItem("14: Literowanie wzrokowe")
+        self.game_selector.addItem("postrzeganie kierunkowe -  wzrok i słuch")
+        self.game_selector.addItem("postrzeganie kierunkowe - tylko słuch")
+        self.game_selector.addItem("postrzeganie kierunkowe - tylko wzrok")
+        self.game_selector.addItem("Różnicowane kolejności tonów")
+
 
         self.game_selector.currentIndexChanged.connect(self.selectiongame)
 
@@ -67,9 +55,14 @@ class MainWindow(QMainWindow):
 
 
     def start_game(self):
+        print (self.game)
+        if self.game < 3:
+            result = exercise3.exercise(self.game)
+            exercise3.wynik(result)
+        elif self.game == 3:
+            result = exercise2.exercise()
+            exercise2.wynik(result, exercise_window)
 
-        result = exercise3.exercise(self.game)
-        exercise3.wynik(result)
 
     def settings(self,game):
         form = QWidget()
@@ -96,12 +89,16 @@ class MainWindow(QMainWindow):
         self.game = i
         if self.game == 1:
             self.opis.setText("Umiejętność porządkowania dwóch następujących po sobie szybko bodźców wzrokowych. Wydłużony próg kolejności wzrokowej powoduje, że zazwyczaj szybkie skanowanie wzrokowe obrazów – potrzebne przy czytaniu – przebiega o wiele wolniej i staje się zajęciem pracochłonnym. Próg kolejności wzrokowej mierzony jest za pomocą następujących bezpośrednio po sobie błysków. Pacjent proszony jest o wskazanie ich kolejności.")
+            result = exercise3.exercise(self.game)
         elif self.game == 2:
             self.opis.setText("Wielkość określająca rozdzielczość czasową bodźców słuchowych, (odległość między dwoma takimi bodźcami). Zbyt wysoki próg kolejności słuchowej sprawia, że dziecko z trudnością odróżnia od siebie głoski zwarto-wybuchowe (b-d-g-k-p-t), co prowadzi do trudności w zrozumieniu mowy.Próg kolejności słuchowej mierzy się za pomocą następujących bezpośrednio po sobie dźwięków. Osoba wskazuje, który dźwięk pojawił się w słuchawkach jako pierwszy.")
+            result = exercise3.exercise(self.game)
         elif self.game == 3:
             self.opis.setText("Umiejętność lokalizacji źródła dźwięku, pozwala na śledzenie toku lekcji w otoczeniu dźwięków zakłócających, które w standardowym pomieszczeniu klasowym mają natężenie ok. 50–60 dB(A). \nSłyszenie kierunkowe mierzone jest za pomocą bocznego kliknięcia w słuchawkach. Pacjent proszony jest o wskazanie kierunku, z którego pojawiło się kliknięcie.")
+            result = exercise3.exercise(self.game)
         elif self.game == 4:
             self.opis.setText("Umiejętność szybkiego spostrzegania różnic wysokości dźwięków pojawiających się jeden po drugim. Zdolność ta jest niezwykle istotna dla różnicowania samogłosek i dekodowania melodii mówienia. \nRóżnicowanie tonów mierzy się za pomocą dwóch różnych tonów pojawiających się w słuchawkach. Należy określić kolejność słyszanego niskiego dźwięku.")
+            result = exercise2.exercise(self.game)
         elif self.game == 5:
             self.opis.setText("Umiejętność przełożenia zmieniających się kliknięć słyszanych raz z lewej, raz z prawej strony na odpowiednie stukanie dłońmi.\nZdolność ta świadczy o efektywnej koordynacji półkul mózgowych, która nie działa prawidłowo u osób z dysleksją, z zaburzeniami przetwarzania słuchowego.\nPacjent proszony jest o naciskanie przycisków w rytm kliknięć (stosownie do nich), na zmianę pojawiających się w słuchawkach raz z prawej raz z lewej strony.")
         elif self.game == 6:
@@ -123,7 +120,7 @@ class MainWindow(QMainWindow):
         elif self.game == 14:
             self.opis.setText("Literowanie wzrokowe to warunek konieczny do opanowania prawidłowej pisowni. Ważna jest umiejętność przywołania słownictwa z naszego wewnętrznego wizualnego leksykonu.\nOsoba powinna potrafić przeliterować znane mu słowo zadane przez terapeutę zarówno od przodu, jak i od tyłu. Dzięki temu można ustalić, jaką technikę literowania lub głoskowania stosuje pacjent.")
 
-
+        return i
 
 window = MainWindow()
 window.show()

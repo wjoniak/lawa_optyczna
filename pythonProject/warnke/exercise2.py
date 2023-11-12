@@ -39,7 +39,7 @@ def task(chann,czas_trwania = 200, pauza = 20):
 
         pygame.time.delay(czas_trwania + pauza)
 
-def exercise():
+def exercise(game = 1):
     pygame.init()
     pygame.mixer.init(channels=2)
 
@@ -153,5 +153,5 @@ def exercise():
 
     return([reflection,trend,counter_n,counter_y])
 
-wynik (exercise(),exercise_window)
-pygame.quit()
+
+
