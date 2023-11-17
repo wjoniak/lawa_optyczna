@@ -51,7 +51,7 @@ def exercise(game = 1):
 
     #DisplayInfo('info/exercise1/')
 
-    pygame.mixer.Sound("sounds/start-beeps.mp3").play()
+    pygame.mixer.Sound("../../GitHub/biofeedback/sounds/start-beeps.mp3").play()
     for i in range(4):
         screen = pygame.image.load('info/start.00' + str(i + 1) + '.jpeg')
         screen = pygame.transform.scale(screen, (1200, 675))
@@ -63,8 +63,8 @@ def exercise(game = 1):
 
     screen = pygame.image.load('images/gamepad_screen.jpg')
 
-    no = pygame.image.load('images/no.png')
-    ok = pygame.image.load('images/ok.png')
+    no = pygame.image.load('../../GitHub/biofeedback/images/no.png')
+    ok = pygame.image.load('../../GitHub/biofeedback/images/ok.png')
     arrow_l = pygame.image.load("images/line-clipart-L.png")
     arrow_r = pygame.image.load("images/line-clipart-R.png")
     result_position = (exercise_window.get_width()/2.0 - 100, 30)

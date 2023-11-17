@@ -16,7 +16,7 @@ from gauge import Gauge
 
 
 
-sound_path = "sounds/select.mp3"
+sound_path = "../../GitHub/biofeedback/sounds/select.mp3"
 exercise_window = pygame.display.set_mode((1200, 675))
 pygame.display.set_caption("ćwiczenie")
 
@@ -52,7 +52,7 @@ def  DisplayInfo(path):
 
 
 
-    pygame.mixer.Sound("sounds/start-beeps.mp3").play()
+    pygame.mixer.Sound("../../GitHub/biofeedback/sounds/start-beeps.mp3").play()
     for i in range(4):
 
         screen = pygame.image.load('info/start.00'+str(i+1)+'.jpeg')
@@ -61,7 +61,7 @@ def  DisplayInfo(path):
         pygame.display.update()
         time.sleep(1)
 
-    screen = pygame.image.load('info/exercise1/exercise1.006.jpeg')
+    screen = pygame.image.load('../../GitHub/biofeedback/info/exercise1/exercise1.006.jpeg')
     screen = pygame.transform.scale(screen, (1200, 675))
     exercise_window.blit(screen, (0, 0))
     pygame.display.update()
@@ -92,7 +92,7 @@ def exercise(game = 1 ):
     joystick_count = pygame.joystick.get_count()
     while joystick_count == 0:
 
-        screen = pygame.image.load('info/error.001.jpeg')
+        screen = pygame.image.load('../../GitHub/biofeedback/info/error.001.jpeg')
         screen = pygame.transform.scale(screen, (1200, 675))
         exercise_window.blit(screen, (0, 0))
         pygame.display.update()
@@ -105,7 +105,7 @@ def exercise(game = 1 ):
 
 
 
-    DisplayInfo('info/exercise1/')
+    DisplayInfo('../../GitHub/biofeedback/info/exercise1/')
 
 
 
@@ -124,25 +124,25 @@ def exercise(game = 1 ):
 
     percentage = 0
 
-    screen = pygame.image.load('info/exercise1/exercise1.006.jpeg')
+    screen = pygame.image.load('../../GitHub/biofeedback/info/exercise1/exercise1.006.jpeg')
     screen = pygame.transform.scale(screen,(1200,675))
     if game == 1 or game == 3:
-        lamp1_L = pygame.image.load('images/bulb1.png')
-        lamp2_L = pygame.image.load('images/bulb2.png')
-        lamp1_R = pygame.image.load('images/bulb1.png')
-        lamp2_R = pygame.image.load('images/bulb2.png')
+        lamp1_L = pygame.image.load('../../GitHub/biofeedback/images/bulb1.png')
+        lamp2_L = pygame.image.load('../../GitHub/biofeedback/images/bulb2.png')
+        lamp1_R = pygame.image.load('../../GitHub/biofeedback/images/bulb1.png')
+        lamp2_R = pygame.image.load('../../GitHub/biofeedback/images/bulb2.png')
         pozycja_obrazka1 = (100, 50)
         pozycja_obrazka2 = (800, 50)
     elif game == 2:
-        lamp1_L = pygame.image.load('images/speaker_left.png')
-        lamp2_L = pygame.image.load('images/speaker_left.png')
-        lamp1_R = pygame.image.load('images/speaker_right.png')
-        lamp2_R = pygame.image.load('images/speaker_right.png')
+        lamp1_L = pygame.image.load('../../GitHub/biofeedback/images/speaker_left.png')
+        lamp2_L = pygame.image.load('../../GitHub/biofeedback/images/speaker_left.png')
+        lamp1_R = pygame.image.load('../../GitHub/biofeedback/images/speaker_right.png')
+        lamp2_R = pygame.image.load('../../GitHub/biofeedback/images/speaker_right.png')
         pozycja_obrazka1 = (100, 50)
         pozycja_obrazka2 = (700, 50)
 
-    no = pygame.image.load('images/no.png')
-    ok = pygame.image.load('images/ok.png')
+    no = pygame.image.load('../../GitHub/biofeedback/images/no.png')
+    ok = pygame.image.load('../../GitHub/biofeedback/images/ok.png')
 
     result_position = (exercise_window.get_width()/2.0 - 100, 100)
 
@@ -163,7 +163,7 @@ def exercise(game = 1 ):
     pygame.display.update()
     time.sleep(3)
 
-    pygame.mixer.music.load("sounds/classrom-talk.mp3")
+    pygame.mixer.music.load("../../GitHub/biofeedback/sounds/classrom-talk.mp3")
     pygame.mixer.music.play(-1)
 
     #main loop:
@@ -246,12 +246,12 @@ def exercise(game = 1 ):
     return([reflection,trend,counter_y,counter_n])
 
 def wynik(wyniki):
-    screen = pygame.image.load('info/exercise1/exercise1.006.jpeg')
+    screen = pygame.image.load('../../GitHub/biofeedback/info/exercise1/exercise1.006.jpeg')
     screen = pygame.transform.scale(screen, (1200, 675))
     exercise_window.blit(screen, (0, 0))
 
     # Utworzenie obiektu Surface z tekstem
-    font = pygame.font.Font('fonts/Raleway-Bold.ttf', 36)  # Wybierz czcionkę i rozmiar
+    font = pygame.font.Font('../../GitHub/biofeedback/fonts/Raleway-Bold.ttf', 36)  # Wybierz czcionkę i rozmiar
     text = font.render("średni czas reakcji: "+str(round(sum(wyniki[0]) / len(wyniki[0] ),2))+' s', True, (0, 0, 255))
     text_rect = text.get_rect()
     text_rect.center = (exercise_window.get_width() // 2, 50)  # Ustaw pozycję napisu

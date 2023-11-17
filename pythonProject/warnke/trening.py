@@ -12,12 +12,12 @@ import pylab
 
 
 def wynik(wyniki,exercise_window):
-    screen = pygame.image.load('info/exercise1/exercise1.006.jpeg')
+    screen = pygame.image.load('../../GitHub/biofeedback/info/exercise1/exercise1.006.jpeg')
     screen = pygame.transform.scale(screen, (1200, 675))
     exercise_window.blit(screen, (0, 0))
 
     # Utworzenie obiektu Surface z tekstem
-    font = pygame.font.Font('fonts/Raleway-Bold.ttf', 36)  # Wybierz czcionkę i rozmiar
+    font = pygame.font.Font('../../GitHub/biofeedback/fonts/Raleway-Bold.ttf', 36)  # Wybierz czcionkę i rozmiar
     text = font.render("średni czas reakcji: "+str(round(sum(wyniki[0]) / len(wyniki[0] ),2))+' s', True, (0, 0, 255))
     text_rect = text.get_rect()
     text_rect.center = (exercise_window.get_width() // 2, 50)  # Ustaw pozycję napisu
@@ -85,7 +85,7 @@ def check_gamepad(exercise_window):
     pygame.joystick.init()
     joystick_count = pygame.joystick.get_count()
     while joystick_count == 0:
-        screen = pygame.image.load('info/error.001.jpeg')
+        screen = pygame.image.load('../../GitHub/biofeedback/info/error.001.jpeg')
         screen = pygame.transform.scale(screen, (1200, 675))
         exercise_window.blit(screen, (0, 0))
         pygame.display.update()
@@ -96,7 +96,7 @@ def check_gamepad(exercise_window):
 
 
 def  start_game(exercise_window):
-    pygame.mixer.Sound("sounds/start-beeps.mp3").play()
+    pygame.mixer.Sound("../../GitHub/biofeedback/sounds/start-beeps.mp3").play()
     for i in range(4):
 
         screen = pygame.image.load('info/start.00'+str(i+1)+'.jpeg')
